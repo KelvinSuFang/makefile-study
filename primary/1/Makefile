@@ -1,7 +1,8 @@
 
 object =  main.o command.o shell.o
-out: $(object) 
-	cc -o out main.o command.o shell.o
+target = out
+$(target): $(object) 
+	cc -o $(target) $(object) 
 
 main.o: main.c
 	cc -c main.c
@@ -14,6 +15,5 @@ shell.o: shell.c shell.h
 
 clean:
 	rm -rf *.o
-	rm a.out
-	rm out
+	rm $(target) 
 
