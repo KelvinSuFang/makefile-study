@@ -1,5 +1,5 @@
 
-out: main.o command.o
+out: main.o command.o shell.o
 	cc -o out main.o command.o shell.o
 
 main.o: main.c
