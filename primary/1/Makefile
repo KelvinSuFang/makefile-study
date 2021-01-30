@@ -1,5 +1,6 @@
 
-out: main.o command.o shell.o
+object =  main.o command.o shell.o
+out: $(object) 
 	cc -o out main.o command.o shell.o
 
 main.o: main.c
