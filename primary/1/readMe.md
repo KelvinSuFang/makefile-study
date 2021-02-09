@@ -385,11 +385,36 @@ $(if <condition>,<then-part> )
 $(if <condition>,<then-part>,<else-part> )
 
 
+有一个 make 的环境变量叫“MAKECMDGOALS”，这个变量中会存放你所指定的终极 目标的列表，
+如果在命令行上，你没有指定目标，
+那么，这个变量是空值。这个变量可 以让你使用在一些比较特殊的情形下。比如下面的例子：
+sources = foo.c bar.c ifneq ( $(MAKECMDGOALS),clean)
+include $(sources:.c=.d)
+endif 基于上面的这个例子，只要我们输入的命令不是“make clean”，那么 makefile 会自动 包含“foo.d”和“bar.d”这两个 makefile。
+
+“clean” 这个伪目标功能是删除所有被 make 创建的文件。 “install” 这个伪目标功能是安装已编译好的程序，其实就是把目标执行文件拷贝到指定的目标 中去。
+“print” 这个伪目标的功能是例出改变过的源文件。 “tar” 这个伪目标功能是把源程序打包备份。也就是一个 tar 文件。
+“dist”
+这个伪目标功能是创建一个压缩文件，一般是把 tar 文件压成 Z 文件。或是 gz 文件。 “TAGS” 这个伪目标功能是更新所有的目标，以备完整地重编译使用。 “check”和“test” 这两个伪目标一般用来测试 makefile 的流程
 
 
 
+四、检查规则 有时候，我们不想让我们的 makefile 中的规则执行起来，我们只想检查一下我们的命 令，或是执行的序列。于是我们可以使用 make 命令的下述参数：
+“-n” “--just-print” “--dry-run”
+“--recon” 不执行参数，这些参数只是打印命令，不管目标是否更新，把规则和连带规则下的命 令打印出来，但不执行，这些参数对于我们调试 makefile 很有用处。
+“-t” “--touch” 这个参数的意思就是把目标文件的时间更新，但不更改目标文件。也就是说，make 假 装编译目标，但不是真正的编译目标，只是把目标变成已编译过的状态。 “-q” “--question”
 
 
+这个参数的行为是找目标的意思，也就是说，如果目标存在，那么其什么也不会输出， 当然也不会执行编译，如果目标不存在，其会打印出一条出错信息。 
+“-W <file>” “--what-if=<file>” “--assume-new=<file>” “--new-file=<file>”
+这个参数需要指定一个文件。一般是是源文件（或依赖文件），Make 会根据规则推导 来运行依赖于这个文件的命令，一般来说，可以和“-n”参数一同使用，来查看这个依 赖文件所发生的规则命令。
+
+
+“-C <dir>” “--directory=<dir>” 指定读取 makefile 的目录。如果有多个“-C”参数，make 的解释是后面的路径以前面的
+作为相对路径，并以最后的目录作为被指定目录。如：“make –C ~hchen/test –C prog”
+等价于“make –C ~hchen/test/prog”。
+
+“-I <dir>” “--include-dir=<dir>” 指定一个被包含 makefile 的搜索目标。可以使用多个“-I”参数来指定多个目录。
 
 
 
